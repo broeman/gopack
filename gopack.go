@@ -16,11 +16,20 @@ import (
 var packages = PackageDB()
 
 func main() {
-	supdeb := PackageDB()
-	supr := NewPackage("Super", NewVersion("1.0-1", "SuperTest", supdeb), true)
-	supdeb = append(supdeb, supr)
+	dependency := PackageDB()    // empty depencies
+	supversions := NewVersions() // empty versions
+	supversions = append(supversions, NewVersion("0.1b", "SuperTest 0.1 alpha", "alpha", dependency))
+	supversions = append(supversions, NewVersion("1.0", "SuperTest 1.0", "stable", dependency))
+
+	supr := NewPackage("Super", supversions, "[0-9].[0-9][a-z]", true)
 	packages = append(packages, supr)
-	tester := NewPackage("Test", NewVersion("0.1-alpha", "Testpackage", supdeb), true)
+
+	dependency = append(dependency, supr) // adding dependency for Test
+	testversions := NewVersions()         // empty versions
+	testversions = append(testversions, NewVersion("0.1a", "TestPackage 0.1a", "alpha", dependency))
+	testversions = append(testversions, NewVersion("0.2", "TestPackage 0.2 Useful", "stable", dependency))
+
+	tester := NewPackage("Test", testversions, "[0-9].[0-9][a-z]", true)
 	packages = append(packages, tester)
 
 	flag.Usage = usage
@@ -38,6 +47,8 @@ func main() {
 					if curpackage == item.Name() {
 						if item.Installed() {
 							fmt.Println("Package is already installed")
+							notfound = false
+							break
 						} else {
 							item.SetInstalled(true)
 							fmt.Println("Installed package:", curpackage)
