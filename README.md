@@ -4,14 +4,14 @@ gopack
 Package Manager in Go Language
 BSD-License applies, see LICENSE for more information.
 
-##### Current Version: 0.1 Aplha
+### Current Version: 0.1 Aplha
 Running in Alpha, and not at all useful. At this stage it is just me tinkering. Haven't even acted professional yet.
 
 ### Purpose
 The idea is to get it to install source packages, defined in a database, with install-scripts based on LinuxFromScratch.
 
 ### Overview
-- Documentation (WIP): http://godoc.org/github.com/broeman/gopack
+- [Documentation (WIP)](http://godoc.org/github.com/broeman/gopack)
 
 ### Features
 **HEAD (0.1 alpha)**
@@ -25,6 +25,7 @@ The idea is to get it to install source packages, defined in a database, with in
 - Updates packages
 
 **WIP (road to 0.1)**
+- Package Manager Management Tools: CRUD
 - Linkage to install script
 - Running a source installation: configure, make, make tests
 
