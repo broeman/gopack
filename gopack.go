@@ -1,9 +1,8 @@
+// Copyright 2014 Jesper Brodersen. All rights reserved.
+// This code is BSD-licensed, see LICENSE file.
+
 // GoPack is a package manger written in Go Language
-// Author: Jesper Brodersen 2014
-// BSD-License applies: http://opensource.org/licenses/bsd-license.php
-
 // !! For experimental use only, not at all in a state of usefulness !!
-
 package main
 
 import (
@@ -15,9 +14,10 @@ import (
 
 const APP_VER = "0.1 Alpha"
 
+// const MAN_VER = "0.01 Alpha"
+
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-
 }
 
 func main() {
@@ -26,9 +26,25 @@ func main() {
 	app.Usage = "Go Package Manager"
 	app.Version = APP_VER
 	app.Commands = []cli.Command{
-		cmd.Install,   // install a package
+		cmd.Install, // install a package
+		//cmd.UnInstall,	// uninstall a package
 		cmd.Installed, // shows current installed packages
+		//cmd.Update,	// update packages
 	}
-
 	app.Run(os.Args)
+
+	// Future implementation of CRUD Management
+	// appMan := cli.NewApp()
+	// appMan.Name = "gopackman"
+	// app.Usage = "Go Package Manager: Management Tools"
+	// app.Version = MAN_VER
+	// app.Commands = []cli.Command{
+	// 	// CRUD implementation
+	// 	cmd.AddPackage,    // adding a package to the database
+	// 	cmd.ShowPackage,   // showing a package from the database
+	// 	cmd.EditPackage,   // editing a package from the database
+	// 	cmd.RemovePackage, // removing a package from the database
+	// }
+	// appMan.Run(os.Args)
+
 }

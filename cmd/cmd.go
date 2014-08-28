@@ -1,3 +1,7 @@
+// Copyright 2014 Jesper Brodersen. All rights reserved.
+// This code is BSD-licensed, see LICENSE file.
+
+// Implementation of CLI command structure
 package cmd
 
 import (

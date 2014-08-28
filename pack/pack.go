@@ -1,3 +1,7 @@
+// Copyright 2014 Jesper Brodersen. All rights reserved.
+// This code is BSD-licensed, see LICENSE file.
+
+// Package structure with Versions
 package pack
 
 type Package struct {
