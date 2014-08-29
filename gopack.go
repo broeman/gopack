@@ -26,10 +26,12 @@ func main() {
 	app.Usage = "Go Package Manager"
 	app.Version = APP_VER
 	app.Commands = []cli.Command{
-		cmd.Install, // install a package
-		//cmd.UnInstall,	// uninstall a package
-		cmd.Installed, // shows current installed packages
+		cmd.Install,   // install a package
+		cmd.UnInstall, // uninstall a package
+		cmd.Show,      // show package
+		cmd.Installed, // shows current installed packages, placeholder
 		//cmd.Update,	// update packages
+		cmd.Init, // placeholder initialization
 	}
 	app.Run(os.Args)
 
@@ -40,6 +42,7 @@ func main() {
 	// app.Version = MAN_VER
 	// app.Commands = []cli.Command{
 	// 	// CRUD implementation
+	//	cmd.Init,		   // initialize database if not exist
 	// 	cmd.AddPackage,    // adding a package to the database
 	// 	cmd.ShowPackage,   // showing a package from the database
 	// 	cmd.EditPackage,   // editing a package from the database

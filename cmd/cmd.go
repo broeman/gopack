@@ -6,9 +6,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/broeman/gopack/db"   // using DB struct, placeholder
 	"github.com/broeman/gopack/pack" // using Package struct
 	"github.com/codegangsta/cli"
-	"os"
 )
 
 var Install = cli.Command{
@@ -16,6 +16,22 @@ var Install = cli.Command{
 	Usage:       "Installs a package",
 	Description: `Installs a package, that isn't already installed`,
 	Action:      runInstall,
+	Flags:       []cli.Flag{},
+}
+
+var UnInstall = cli.Command{
+	Name:        "uninstall",
+	Usage:       "Uninstalls a package",
+	Description: `Uninstalls a package, that is already installed`,
+	Action:      runUninstall,
+	Flags:       []cli.Flag{},
+}
+
+var Show = cli.Command{
+	Name:        "show",
+	Usage:       "shows a package",
+	Description: `Shows a package, that is in the database`,
+	Action:      showPackage,
 	Flags:       []cli.Flag{},
 }
 
@@ -27,62 +43,90 @@ var Installed = cli.Command{
 	Flags:       []cli.Flag{},
 }
 
-// placeholders
-var packages = pack.PackageDB()
+var Init = cli.Command{
+	Name:        "init",
+	Usage:       "Placeholder initialization",
+	Description: "Placeholdering",
+	Action:      runPlaceholder,
+	Flags:       []cli.Flag{},
+}
 
-func runPlaceholder() {
-	dependency := pack.PackageDB()    // empty depencies
-	supversions := pack.NewVersions() // empty versions
-	supversions = append(supversions, pack.NewVersion("0.1b", "SuperTest 0.1 alpha", "alpha", dependency))
-	supversions = append(supversions, pack.NewVersion("1.0", "SuperTest 1.0", "stable", dependency))
+func runPlaceholder(ctx *cli.Context) {
+	db.InitDB()
+}
 
-	supr := pack.NewPackage("Super", supversions, "[0-9].[0-9][a-z]", true)
-	packages = append(packages, supr)
+func showPackage(ctx *cli.Context) {
+	if len(ctx.Args()) != 1 {
+		fmt.Println("You need to specify which package you want to query")
+		return
+	}
+	apack := pack.RetrievePackage(ctx.Args().First())
+	if apack.Name() == "" {
+		fmt.Println("Package not found")
+		return
+	}
+	fmt.Println(apack.Name(), apack.Installed())
+}
 
-	dependency = append(dependency, supr) // adding dependency for Test
-	testversions := pack.NewVersions()    // empty versions
-	testversions = append(testversions, pack.NewVersion("0.1a", "TestPackage 0.1a", "alpha", dependency))
-	testversions = append(testversions, pack.NewVersion("0.2", "TestPackage 0.2 Useful", "stable", dependency))
+func runUninstall(ctx *cli.Context) {
+	if len(ctx.Args()) != 1 {
+		fmt.Println("You need to specify which package you want to uninstall")
+		return
+	}
 
-	tester := pack.NewPackage("Test", testversions, "[0-9].[0-9][a-z]", true)
-	packages = append(packages, tester)
+	curpackage := pack.RetrievePackage(ctx.Args().First())
+
+	if curpackage.Name() == "" {
+		fmt.Println("Package not found")
+		return
+	}
+
+	if !curpackage.Installed() {
+		fmt.Println("Package " + curpackage.Name() + " is not installed")
+		return
+	}
+
+	fmt.Println("Uninstalling package " + curpackage.Name())
+	curpackage.SetInstalled(false)
 }
 
 func runInstall(ctx *cli.Context) {
-	runPlaceholder()
 	if len(ctx.Args()) != 1 {
 		fmt.Println("You need to specify which package you want to install")
-		os.Exit(2)
+		return
 	}
 
-	curpackage := ctx.Args().First()
-	notfound := true
-	for i := range packages {
-		item := packages[i]
-		if curpackage == item.Name() {
-			if item.Installed() {
-				fmt.Println("Package is already installed")
-				notfound = false
-				break
-			} else {
-				item.SetInstalled(true)
-				fmt.Println("Installed package:", curpackage)
-				notfound = false
-				break
-			}
-		}
+	curpackage := pack.RetrievePackage(ctx.Args().First())
+
+	if curpackage.Name() == "" {
+		fmt.Println("Package not found")
+		return
 	}
-	if notfound {
-		fmt.Println(curpackage, "was not found")
+
+	if curpackage.Installed() {
+		fmt.Println("Package " + curpackage.Name() + " is already installed")
+		return
 	}
+
+	fmt.Println("Installing package " + curpackage.Name())
+	curpackage.SetInstalled(true)
 }
 
+// Placeholder to see if things works
 func runInstalled(*cli.Context) {
-	runPlaceholder()
-	for i := range packages {
-		item := packages[i]
-		if item.Installed() {
-			fmt.Println("Package:", item.Name(), "\nVersion:", item.Version(), "\nDescription:", item.Description(), "\nDependencies:", item.Dependencies(), "\n")
-		}
+	rows, err := db.QueryAllPackages()
+	if err != nil {
+		fmt.Println("Query Error: : %v\n", err)
 	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var name string
+		var versionregex string
+		var installed bool
+		rows.Scan(&id, &name, &versionregex, &installed)
+		fmt.Println(id, name, installed)
+	}
+	rows.Close()
 }

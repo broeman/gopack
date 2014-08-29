@@ -4,6 +4,10 @@
 // Package structure with Versions
 package pack
 
+import (
+	"github.com/broeman/gopack/db" // using DB struct
+)
+
 type Package struct {
 	name         string
 	versions     []Version
@@ -71,20 +75,34 @@ func NewPackage(name string, versions []Version, versionRegEx string, installed 
 }
 
 // TODO: get from from database
-func RetrievePackage(name string) {
-}
-
-// TODO: delete from database
-func (p *Package) Delete() {
+func RetrievePackage(input string) (pack Package) {
+	rows, err := db.QueryPackage(input)
+	if err != nil {
+		panic(err)
+	}
+	for rows.Next() {
+		var id int
+		var name string
+		var versionregex string
+		var installed bool
+		rows.Scan(&id, &name, &versionregex, &installed)
+		// placeholder newversions until new table is made
+		pack = NewPackage(name, NewVersions(), versionregex, installed)
+	}
+	return pack
 }
 
 // TODO: update database
 func (p *Package) UpdatePackage() {
 }
 
-// installed setter
+// install a package
 func (p *Package) SetInstalled(setting bool) {
 	p.installed = setting
+	err := db.UpdatePackageInstalled(p.name, p.installed)
+	if err != nil {
+		panic(err)
+	}
 }
 
 /* Version
