@@ -22,8 +22,8 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "gopack"
-	app.Usage = "Go Package Manager"
+	app.Name = "pm"
+	app.Usage = "Package Manager in Go"
 	app.Version = APP_VER
 	app.Commands = []cli.Command{
 		cmd.Install,   // install a package
@@ -37,7 +37,7 @@ func main() {
 
 	// Future implementation of CRUD Management
 	// appMan := cli.NewApp()
-	// appMan.Name = "gopackman"
+	// appMan.Name = "pm-tools"
 	// app.Usage = "Go Package Manager: Management Tools"
 	// app.Version = MAN_VER
 	// app.Commands = []cli.Command{
