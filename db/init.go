@@ -1,3 +1,7 @@
+// Copyright 2014 Jesper Brodersen. All rights reserved.
+// This code is BSD-licensed, see LICENSE file.
+
+// Database handling, Initialization of Database
 package db
 
 import (
