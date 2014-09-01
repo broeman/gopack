@@ -1,14 +1,14 @@
 gopack
 ======
 
-Package Manager in Go Language
+** Package Manager in Go Language **
 BSD-License applies, see LICENSE for more information.
 
 ### Current Version: 0.1a
 Running in alpha, and not that useful. At this stage it is just me tinkering. Haven't even acted professional yet.
 
 ### Purpose
-The idea is to get it to install source packages, defined in a database, with install-scripts based on LinuxFromScratch.
+This is a library for pm-get and pm-tools, which are there to let users install packages.More ideas is on the table, but I'll take one step at the time. For this time being, it is just me wanting to do something productive and learning to make something useful for myself.
 
 ### Overview
 - [Documentation (WIP)](http://godoc.org/github.com/broeman/gopack)
