@@ -10,7 +10,7 @@ import (
 func QueryPackage(pack string) (rows *sql.Rows, err error) {
 	var db *sql.DB
 
-	db, err = sql.Open("sqlite3", "./packages.db")
+	db, err = sql.Open("sqlite3", getLibraryDir(PATH))
 	if err != nil {
 		fmt.Printf("sql.Open error: %v\n", err)
 		return nil, err
@@ -28,7 +28,7 @@ func QueryPackage(pack string) (rows *sql.Rows, err error) {
 func UpdatePackageInstalled(pack string, update bool) (err error) {
 	var db *sql.DB
 
-	db, err = sql.Open("sqlite3", "./packages.db")
+	db, err = sql.Open("sqlite3", getLibraryDir(PATH))
 	if err != nil {
 		fmt.Printf("sql.Open error: %v\n", err)
 		return err
@@ -52,7 +52,7 @@ func UpdatePackageInstalled(pack string, update bool) (err error) {
 func QueryAllPackages() (rows *sql.Rows, err error) {
 	var db *sql.DB
 
-	db, err = sql.Open("sqlite3", "./packages.db")
+	db, err = sql.Open("sqlite3", getLibraryDir(PATH))
 	if err != nil {
 		fmt.Printf("sql.Open error: %v\n", err)
 		return nil, err

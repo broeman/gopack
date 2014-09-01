@@ -123,11 +123,6 @@ func RetrieveVersion(id string) {
  * To be removed when database is implemented
  */
 
-// Slices of packages, placeholder until database is up running
-func PackageDB() (packages []Package) {
-	return packages
-}
-
 // Slices of versions, placeholder until database is up running
 func NewVersions() (versions []Version) {
 	return versions
